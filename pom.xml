@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.adiye.happyhome</groupId>
-    <artifactId>coreapi-aws</artifactId>
+    <artifactId>containercoreapi</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <dependencies>
@@ -72,7 +72,35 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>build</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <imageName>${project.artifactId}-${project.version}</imageName>
+                    <!--<baseImage>java</baseImage>
+                    <entrypoint>["java","-jar","/${project.build.finalName}.jar"]</entrypoint>-->
+                    <!--<pushImage>true</pushImage>-->
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
         </plugins>
+        <finalName>ContainerCoreApi</finalName>
     </build>
 
 </project>
